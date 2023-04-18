@@ -25,7 +25,7 @@
         state: directory
         owner: "{{ bind9_user }}"
         group: "{{ bind9_group }}"
-        mode: 0755
+        mode: 0775
 
     - name: Configure log rotate for bind9
       template:

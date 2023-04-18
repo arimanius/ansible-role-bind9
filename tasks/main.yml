@@ -124,7 +124,7 @@
 # TODO: DDNS: move keys into vault file
 - name: Copy over DDNS keys for zones with update_keyfile
   copy:
-    src: bind/zones/{{ item.update_keyfile }}.key
+    src: "{{ bind9_local_keydir }}/{{ item.update_keyfile }}.key"
     dest: /etc/bind/keys/{{ item.update_keyfile }}.key
     owner: "{{ bind9_user }}"
     group: "{{ bind9_group }}"
@@ -138,7 +138,7 @@
 
 - name: Copy over DDNS private keys for zones with update_keyfile
   copy:
-    src: bind/zones/{{ item.update_keyfile }}.private
+    src: "{{ bind9_local_keydir }}/{{ item.update_keyfile }}.private"
     dest: /etc/bind/keys/{{ item.update_keyfile }}.private
     owner: "{{ bind9_user }}"
     group: "{{ bind9_group }}"

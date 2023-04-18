@@ -64,10 +64,12 @@ options {
 {%       if loop.first %}
 // The following keys are used for dynamic DNS updates
 {%       endif %}
-key {{ item.update_key_name | default('ddns_update') }} {
+{%		 if item.update_key_name is defined %}
+key {{ item.update_key_name }} {
 	algorithm {{ zone.update_key_algorithm|default('hmac-sha512') }};
 	secret "{{ zone.update_key_secret|default() }}";
 };
+{%       endif %}
 {%     endif %}
 {%   endfor %}
 {% endif %}

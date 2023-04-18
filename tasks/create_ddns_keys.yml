@@ -7,11 +7,11 @@
   when: item.update_keyfile is defined
 
 - name: Generate DDNS key
-  shell: "tsig-keygen -a {{ item.update_key_algorithm | d('hmac-sha512') }} {{ item.update_key_name | default('ddns_update') }} > /etc/bind/keys/{{ item.update_keyfile }}.private"
+  shell: "tsig-keygen -a {{ item.update_key_algorithm | d('hmac-sha512') }} {{ item.update_key_name }} > /etc/bind/keys/{{ item.update_keyfile }}.private"
   args:
     chdir: "{{ bind9_zonedir }}"
   register: ddns_key
-  when: item.update_keyfile is defined and not update_keyfile_tmp.stat.exists
+  when: item.update_keyfile is defined and not update_keyfile_tmp.stat.exists and item.update_key_name is defined
 
 - name: Copy DDNS key to control host
   fetch:

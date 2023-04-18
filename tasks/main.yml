@@ -142,7 +142,7 @@
     dest: /etc/bind/keys/{{ item.update_keyfile }}.private
     owner: "{{ bind9_user }}"
     group: "{{ bind9_group }}"
-    mode: 0600
+    mode: 0640
   with_items:
     - "{{ bind9_zones_static + bind9_zones_dynamic }}"
   when:

@@ -35,6 +35,18 @@
         group: "{{ bind9_group }}"
         mode: 0644
 
+- name: Create bind9 directory for keys
+  file:
+    path: /etc/bind/keys
+    state: directory
+    owner: "{{ bind9_user }}"
+    group: "{{ bind9_group }}"
+    mode: 02750
+  when: bind9_authoritative | default()
+  tags:
+    - role:bind9:ddns
+    - role:bind9:dnssec
+
 - name: Create dynamic DNS keys
   include_tasks: create_ddns_keys.yml
   with_items:
@@ -108,18 +120,6 @@
     - Restart bind9
   tags:
     - role:bind9:rndc_key
-
-- name: Create bind9 directory for keys
-  file:
-    path: /etc/bind/keys
-    state: directory
-    owner: "{{ bind9_user }}"
-    group: "{{ bind9_group }}"
-    mode: 02750
-  when: bind9_authoritative | default()
-  tags:
-    - role:bind9:ddns
-    - role:bind9:dnssec
 
 # TODO: DDNS: move keys into vault file
 - name: Copy over DDNS keys for zones with update_keyfile

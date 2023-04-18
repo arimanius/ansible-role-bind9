@@ -47,9 +47,11 @@ zone "{{ zone.name }}" {
     auto-dnssec maintain;
     inline-signing yes;
 {%     endif %}
-{%     if zone.update_policy_grant is defined and zone.update_key_name is defined %}
+{%     if zone.update_policy_grants is defined and zone.update_policy_grants|length > 0 and zone.update_key_name is defined %}
     update-policy {
-        grant {{ zone.update_key_name }} {{ zone.update_policy_grant }};
+{%       for grant in zone.update_policy_grants %}
+        grant {{ zone.update_key_name }} {{ grant }};
+{%       endfor %}
     };
 {%     endif %}
 {%   elif zone_type == 'slave' %}
